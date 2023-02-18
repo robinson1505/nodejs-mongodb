@@ -1,22 +1,27 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const dbConfig = require("./app/config/database.config");
+const UserRoute = require("./app/routes/user.routes");
 const mongoose = require("mongoose");
 mongoose.Promise = global.Promise;
-mongoose.set('strictQuery', true);
+mongoose.set("strictQuery", true);
 const app = express();
 
-mongoose.connect(dbConfig.url,{
+mongoose
+  .connect(dbConfig.url, {
     useNewUrlParser: true
-}).then(() => {
-    console.log("Database Connection Success....................")
-}).catch(error =>{
-    console.log("Could Not Connect..........." ,error)
-})
+  })
+  .then(() => {
+    console.log("Database Connection Success....................");
+  })
+  .catch(error => {
+    console.log("Could Not Connect...........", error);
+  });
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+app.use("/user", UserRoute);
 app.get("/", (req, res) => {
   res.send("Welcome to crud operation nodejs and mongodb ");
 });
